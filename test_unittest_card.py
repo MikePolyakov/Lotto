@@ -22,3 +22,8 @@ class TestCard(unittest.TestCase):
         player = '#1'
         test_card.check_number_in_card(number, player)
         self.assertEqual(test_card.counter, 0)
+
+    def test_str(self):
+        new_card = Card()
+        test_card = f'{len(new_card.selected_numbers)} numbers in card: {new_card.selected_numbers}'
+        assert test_card == str(new_card)

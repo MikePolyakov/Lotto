@@ -41,7 +41,7 @@ class Card:
                 self.card[i][each_position] = each
 
     def print_card(self, player):
-        print('-- Карточка', player, '------')
+        print('---- Карточка', player, '------')
         for i in range(3):
             print(*self.card[i])
         print('-' * 30)
@@ -59,10 +59,22 @@ class Card:
                 else:
                     self.card[i][position] = '-'
 
+    def __str__(self):
+        return f'{len(self.selected_numbers)} numbers in card: {self.selected_numbers}'
+
+    def __getitem__(self, item):
+        return self.card[item]
+
+    def __eq__(self, other):
+        return self.counter == other.counter
+
+    def __contains__(self, item):
+        return item in self.selected_numbers
+
 
 class Human:
-    def __init__(self):
-        self.name = 'человека'
+    def __init__(self, name):
+        self.name = name
         self.player_card = Card()
 
     def ask_question(self, number):
@@ -78,12 +90,50 @@ class Human:
         else:
             return
 
+    def __str__(self):
+        return f'Y {self.name} {self.player_card}'
+
+    def __eq__(self, other):
+        return self.player_card == other.player_card
+
 
 class Computer(Human):
-    def __init__(self):
-        self.name = 'компьютера'
+    def __init__(self, name):
+        self.name = 'компьютера #' + str(name)
         self.player_card = Card()
 
     def ask_question(self, number):
         self.player_card.check_number_in_card(number, self.name)
         self.player_card.print_card(self.name)
+
+    def __str__(self):
+        return f'У {self.name} {self.player_card}'
+
+    def __eq__(self, other):
+        return self.player_card == other.player_card
+
+
+if __name__ == '__main__':
+    new_card = Card()
+    print(new_card)
+    print(90 in new_card)
+
+    second_card = Card()
+    print(second_card)
+    print(90 in new_card)
+    for row in second_card:
+        print(*row)
+
+    print(new_card == second_card)
+
+    man = Human('Leo')
+    print(man)
+    print(90 in man.player_card)
+
+    second_man = Human('Kate')
+    print(second_man)
+    print(90 in man.player_card)
+    print(man == second_man)
+
+    comp = Computer('1')
+    print(comp)
