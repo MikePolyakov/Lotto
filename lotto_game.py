@@ -3,18 +3,23 @@ from game_classes import Human
 from game_classes import Computer
 
 
-def man_or_comp(i):
+def man_or_comp(i, comp_number):
     type_of_player = input(f'игрок №{i+1} - это человек?  (y/n) ')
     if type_of_player == 'y':
-        return Human()
+        name = input('What is his name? ')
+        return Human(name)
     else:
-        return Computer()
+        comp_number += 1
+        return Computer(comp_number)
 
 
 number_of_players = int(input('Сколько будет игроков в игре лото? '))
 lotto_players = []
+computer_number = 0
 for i in range(number_of_players):
-    lotto_player = man_or_comp(i)
+    lotto_player = man_or_comp(i, computer_number)
+    if lotto_player.name[-1:].isdigit():
+        computer_number = int(lotto_player.name[-1:])
     lotto_players.append(lotto_player)
 print('=' * 30)
 print('Игра начинается')
@@ -33,8 +38,8 @@ while True:
 
     print('Новый бочонок:', new_barrel, 'осталось:', 90 - len(barrel_list))
     for i in range(number_of_players):
-        if lotto_players[i].name == 'человека':
-            lotto_players[i].player_card.print_card(lotto_players[i].name)
+        if lotto_players[i].name[-1:].isdigit():
             lotto_players[i].ask_question(new_barrel)
         else:
+            lotto_players[i].player_card.print_card(lotto_players[i].name)
             lotto_players[i].ask_question(new_barrel)
